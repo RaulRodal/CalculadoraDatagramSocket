@@ -12,10 +12,9 @@ public class CalculadoraClient {
 
 			System.out.println("Enviando petición al servidor");
 
-
 			InetAddress serverAddr = InetAddress.getByName("localhost");
 			
-			//Operacion
+			//Tipo de operacion
 			String mensaje = new String("divide");
 			DatagramPacket datagrama = new DatagramPacket(mensaje.getBytes(), mensaje.getBytes().length, serverAddr,5555);
 			datagramSocket.send(datagrama);
@@ -29,12 +28,10 @@ public class CalculadoraClient {
 			Thread.sleep(2000);
 			//Operando 2
 			String operando2 = new String("5");
-			DatagramPacket datagrama2 = new DatagramPacket(operando2.getBytes(), operando2.getBytes().length, serverAddr,
-					5555);
+			DatagramPacket datagrama2 = new DatagramPacket(operando2.getBytes(), operando2.getBytes().length, serverAddr,5555);
 			datagramSocket.send(datagrama2);
 			
 			
-
 			System.out.println("Mensaje enviado");
 
 			System.out.println("Recibiendo respuesta");

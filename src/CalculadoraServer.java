@@ -20,7 +20,8 @@ public class CalculadoraServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ret = new String(packet.getData(), 0, packet.getLength()).trim(); // necesario porque no se que longitud tiene
+		// Se quitan los espacios porque no se sabe que longitud tiene
+		ret = new String(packet.getData(), 0, packet.getLength()).trim(); 
 		
 		return ret;
 	}
@@ -63,16 +64,16 @@ public class CalculadoraServer {
 				System.out.println("Esperando operacion");
 
 				byte[] buffer = new byte[100];
-				DatagramPacket datagrama1 = new DatagramPacket(buffer, buffer.length);
-				datagramSocket.receive(datagrama1);
+				DatagramPacket datagrama = new DatagramPacket(buffer, buffer.length);
+				datagramSocket.receive(datagrama);
 
-				String operacion = new String(datagrama1.getData()).trim().toLowerCase();
+				String operacion = new String(datagrama.getData()).trim().toLowerCase();
 
-				InetAddress clientAddr = datagrama1.getAddress();
-				int clientPort = datagrama1.getPort();
+				InetAddress clientAddr = datagrama.getAddress();
+				int clientPort = datagrama.getPort();
 
-				System.out.println("operacion recibido: desde " + clientAddr + ", puerto " + clientPort);
-				System.out.println("Contenido del operacion: " + operacion);
+				System.out.println("Operacion recibida: desde " + clientAddr + ", puerto " + clientPort);
+				System.out.println("Tipo de operacion: " + operacion);
 
 				if (operacion.equals("suma") || operacion.equals("resta") || operacion.equals("multiplica") || operacion.equals("divide")) {
 
@@ -83,14 +84,15 @@ public class CalculadoraServer {
 					System.out.println("Esperando operando 2");
 					Integer operando2 = Integer.parseInt(mensajeRecibido(datagramSocket));
 					
-					
+					// Creacion del mensaje
 					String mensaje = mensajeOperacion(operacion, operando1, operando2);
 					byte[] respuesta = mensaje.getBytes();
 					DatagramPacket datagramaRespuesta = new DatagramPacket(respuesta, respuesta.length, clientAddr, clientPort);
+					// Envio del mensaje
 					datagramSocket.send(datagramaRespuesta);
-					System.out.println("operacion enviado");
+					System.out.println("Resultado enviado");
 				} else {
-					System.out.println("operacion recibida no reconocida");
+					System.out.println("Operacion recibida no reconocida");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
